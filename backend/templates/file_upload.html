@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <title>file_upload</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+</head>
+<body>
+<div>
+    <input type="file" name="f" id="f" />
+    <button id="upload-btn" onclick="upload()">上传</button>
+  </div>
+  <script>
+    function upload() {
+      const f = document.querySelector('#f');
+      console.dir(f);
+      const fdata = new FormData();
+      fdata.append('file', f.files[0]);
+      console.log(f.files)
+      $post('/file_upload', fdata)
+    }
+ 
+    function $post(url, data) {
+      const xhr = new XMLHttpRequest();
+      xhr.open('post', url, true);
+      xhr.upload.addEventListener("progress", function (e) { // 也可以用ponprogress进行监听
+        if (e.lengthComputable) {
+          let percentComplete = e.loaded / e.total; // 计算上传进度（比例）
+          console.log(percentComplete);
+        }
+      })
+      xhr.send(data);
+    }
+  </script> 
+</body>
+</html>
